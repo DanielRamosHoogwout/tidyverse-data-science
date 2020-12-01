@@ -1,0 +1,21 @@
+---
+title: "Clase 04 Noviembre R"
+author: "Daniel Ramos"
+date: "4/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Clase
+
+planes %>% es una abreviatura
+
+count(tailnum) #Le esta diciendo que coja planes
+
+es lo mismo que:
+
+count(planes, tailnum)
+

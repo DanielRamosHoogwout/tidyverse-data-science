@@ -1,0 +1,98 @@
+---
+title: "Tarea 9 Tidyverse"
+author: "Daniel Ramos"
+date: "10/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Ejercicio 1
+
+Piensa cómo podrías usar la función arrange() para colocar todos los valores NA al inicio. Pisa: puedes la función is.na() en lugar de la función desc() como argumento de arrange.
+
+```{r}
+library(tidyverse)
+nombres = c("Dani", "Mar", "Pedro", "Isabel", "Eugenio")
+edades= c(27,NA,13,NA,50)
+
+df = data.frame(nombres, edades)
+
+arrange(df, !is.na(edades)) #Los ordena por su valor TRUE
+```
+
+## Ejercicio 2
+
+Ordena los vuelos de flights para encontrar los vuelos más retrasados en la salida. ¿Qué vuelos fueron los que salieron los primeros antes de lo previsto?
+
+```{r}
+library(nycflights13)
+arrange(flights, dep_delay)[1:10,] #Los 10 vuelos que salieron más antes de lo previsto
+```
+
+## Ejercicio 3
+
+Ordena los vuelos de flights para encontrar los vuelos más rápidos. Usa el concepto de rapidez que consideres. 
+
+```{r}
+arrange(flights, air_time)[1:10] #10 vuelos más rápidos
+```
+
+## Ejercicio 4
+
+¿Qué vuelos tienen los trayectos más largos? Busca en Wikipedia qué dos aeropuertos del dataset alojan los vuelos más largos.
+
+Entre Nueva York y Hawaii
+
+## Ejercicio 5
+
+¿Qué vuelos tienen los trayectos más cortos? Busca en Wikipedia qué dos aeropuertos del dataset alojan los vuelos más largos.
+
+Providence, Rhode Island – 28 minutes.
+
+## Ejercicio 6
+
+Dale al coco para pensar cuantas más maneras posibles de seleccionar los campos dep_time, dep_delay, arr_time y arr_delay del dataset de flights. 
+
+```{r}
+select(flights, dep_time, dep_delay, arr_time, arr_delay)
+select(flights, starts_with("dep"), starts_with("arr"))
+select(flights, ends_with("time"), ends_with("delay"), -starts_with("sched"), -starts_with("air"))
+```
+
+## Ejercicio 7
+
+¿Qué ocurre si pones el nombre de una misma variable varias veces en una select()?
+
+```{r}
+select(flights, air_time, air_time) #Me lo da solo 1 vez
+```
+
+## Ejercicio 8
+
+Investiga el uso de la función one_of() de dplyr.
+
+Select Variables From Character Vectors
+one_of(), se ha reemplazado por all_of() o any_of()
+
+## Ejercicio 9
+
+Investiga cómo puede ser útil la función one_of() de la pregunta anterior en conjunción con el vector de variables 
+
+Investiga cómo puede ser útil la función one_of() de la pregunta anterior en conjunción con el vector de variables 
+
+```{r}
+select(flights, one_of(c("year", "month", "day", "dep_delay", "arr_delay")))
+```
+
+## Ejercicio 10
+
+Intenta averiguar el resultado del siguiente código. Luego ejecútalo y a ver si el resultado te sorprende.
+
+select(flights, contains("time"))
+
+Intenta averiguar cómo lo hacen las funciones de ayuda de la select para tratar el caso por defecto y cómo lo puedes cambiar.
+
+Nos devuelve todas la variable que contenga la palabra "time"

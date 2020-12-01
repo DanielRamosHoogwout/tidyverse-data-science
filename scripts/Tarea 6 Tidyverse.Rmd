@@ -1,0 +1,102 @@
+---
+title: "Untitled"
+author: "Daniel Ramos"
+date: "29/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Ejercicio 1
+
+El siguiente gráfico que genera el código de R es correcto pero puede mejorarse. ¿Qué cosas añadirías para mejorarlo?
+
+```{r}
+#library(tidyverse)
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy, color=class )) + 
+  geom_point()
+#Añadir colores por clases para diferenciar el tipo de vehiculo
+
+```
+
+## Ejercicio 2
+
+Investiga la documentación de geom_jitter(). ¿Qué parámetros controlan la cantidad de ruído aleatorio (jitter)?
+
+width: Amount of vertical and horizontal jitter
+height: Amount of vertical and horizontal jitter
+
+## Ejercicio 3
+
+Compara las funciones geom_jitter contra geom_count y busca semejanzas y diferencias entre ambas.
+
+geom_jitter añade "ruido" aleatorio para representar variable para que una no este encima de la otra
+
+geom_count va añadiendo tamaño a los puntos que estan superpuestos en funcion de la cantidad de puntos que esten juntos
+
+## Ejercicio 4
+
+¿Cual es el valor por defecto del parámetro position de un geom_boxplot? Usa el dataset de diamonds o de mpg para hacer una visualización que lo demuestre.
+
+dodge2: Dodging preserves the vertical position of an geom while adjusting the horizontal position
+```{r}
+ggplot(data = mpg, mapping = aes(x=class, y = hwy)) +
+  geom_boxplot(position="dodge2")
+
+```
+
+## Ejercicio 5
+
+Convierte un diagrama de barras apilado en un diagrama de sectores o de tarta usando la función coord_polar()
+
+```{r}
+ggplot(data = diamonds) +
+  geom_bar(mapping=aes(x = cut, fill=color)) + 
+  coord_polar()
+
+```
+
+## Ejercicio 6
+
+¿Qué hace la función labs()? Lee la documentación y explícalo correctamente.
+
+Es la función para nombrar o quitar etiquetas en los ejes.
+
+## Ejercicio 7
+
+¿En qué se diferencian las funciones coord_quickmap() y coord_map()?
+
+coord_map() projects a portion of the earth, which is approximately spherical, onto a flat 2D plane using any projection defined by the mapproj package.Map projections do not, in general, preserve straight lines, so this requires considerable computation.
+
+coord_quickmap is a quick approximation that does preserve straight lines
+
+## Ejercicio 8
+
+Investiga las coordenadas coord_fixed() e indica su función
+
+A fixed scale coordinate system forces a specified ratio between the physical representation of data units on the axes. The ratio represents the number of units on the y-axis equivalent to one unit on the x-axis. The default, ratio = 1, ensures that one unit on the x-axis is the same length as one unit on the y-axis. Ratios higher than one make units on the y axis longer than units on the x-axis, and vice versa.
+
+## Ejercicio 9
+
+Investiga la geometría de la función geom_abline(), geom_vline() y geom_hline() e indica su función respectivamente.
+
+geom_abline se utiliza para dibujar lineas con cualquier pendiente
+geom_vline se utiliza para dibujar lineas verticales
+geom_hline se utiliza para dibujar lineas horizontales
+
+## Ejercicio 10
+
+¿Qué nos indica el gráfico siguiente acerca de la relación entre el consumo en ciudad y en autopista del dataset de mpg?
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy )) + 
+  geom_point() + 
+  geom_abline() + 
+  coord_fixed()
+```
+
+La relacion entre consumo en autopista y en ciudad es lineal y que podemos conducir más millas por autopista que por ciudad
+
+  

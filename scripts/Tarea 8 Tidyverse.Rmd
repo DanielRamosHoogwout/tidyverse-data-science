@@ -1,0 +1,105 @@
+---
+title: "Tarea 8 Tidyverse"
+author: "Daniel Ramos"
+date: "4/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Ejercicio 1
+
+Encuentra todos los vuelos que llegaron más de una hora tarde de lo previsto.
+
+```{r}
+library(tidyverse)
+library(nycflights13)
+View(flights)
+filter(flights, arr_delay > 60) #La unidades estan en minutos
+
+```
+
+## Ejercicio 2
+
+Encuentra todos los vuelos que volaron hacia San Francisco (aeropuertos SFO y OAK)
+
+```{r}
+filter(flights, dest == "SFO" | dest == "OAK")
+```
+
+## Ejercicio 3
+
+Encuentra todos los vuelos operados por United American (UA) o por American Airlines (AA)
+
+```{r}
+filter(flights, carrier=="UA" | carrier=="AA")
+```
+
+## Ejercicio 4
+
+Encuentra todos los vuelos que salieron los meses de primavera (Abril, Mayo y Junio)
+
+```{r}
+filter(flights, month %in% c(4,5,6))
+```
+
+## Ejercicio 5
+
+Encuentra todos los vuelos que llegaron más de una hora tarde pero salieron con menos de una hora de retraso.
+
+```{r}
+filter(flights, arr_delay > 60 & dep_delay < 60)
+```
+
+## Ejercicio 6
+
+Encuentra todos los vuelos que salieron con más de una hora de retraso pero consiguieron llegar con menos de 30 minutos de retraso (el avión aceleró en el aire)
+
+```{r}
+filter(flights, dep_delay > 60 & arr_delay < 30)
+```
+
+## Ejercicio 7
+
+Encuentra todos los vuelos que salen entre medianoche y las 7 de la mañana (vuelos nocturnos).
+
+```{r}
+filter(flights, dep_time >= 000 & dep_time <= 700)
+```
+
+## Ejercicio 8
+
+Investiga el uso de la función between() de dplyr. ¿Qué hace? Puedes usarlo para resolver la sintaxis necesaria para responder alguna de las preguntas anteriores?
+
+```{r}
+#Devuelve los valores que estan entre a y b
+#Lo aplicamos al ejercicio anterior
+filter(flights, between(flights$dep_time, 000, 700))
+```
+
+## Ejercicio 9
+
+¿Cuantos vuelos tienen un valor desconocido de dep_time?
+
+```{r}
+#Guardo en df 
+df = filter(flights, is.na(flights$dep_time))
+nrow(df) #8255 Vuelos tienen NA en dep_time
+```
+
+## Ejercicio 10
+
+¿Qué variables del dataset contienen valores desconocidos? ¿Qué representan esas filas donde faltan los datos?
+
+dep_time, dep_delay, arr_time, arr_delay, tailnum y airtime
+Problemente son vuelos cancelados
+
+## Ejercicio 11
+
+Ahora vas a sorprenderte con la magia oscura... Contesta que dan las siguientes condiciones booleanas
+
+NA^0 = 1 Un numero elevado a 0 siempre es 1 por convención.
+NA|TRUE = TRUE prevalece sobre NA, FALSE no.
+FALSE&NA = FALSE prevale sobre NA, TRUE no.

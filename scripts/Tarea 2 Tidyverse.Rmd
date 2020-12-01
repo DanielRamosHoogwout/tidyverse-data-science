@@ -1,0 +1,76 @@
+---
+title: "Tarea 2 Tidyverse"
+author: "Daniel Ramos"
+date: "28/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Ejercicio 1
+
+Toma el siguiente fragmento de código y di qué está mal. ¿Por qué no aparecen pintados los puntos de color verde?
+
+library(tidyverse)
+
+#El argumento color tiene que estar fuera de aes() para que se aplique de forma global
+
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy), color="green")
+
+## Ejercicio 2
+
+Toma el dataset de mpg anterior y di qué variables son categóricas.
+
+Categoricas: manufacturer, model, trans, drv, fl, class
+
+## Ejercicio 3
+
+Toma el dataset de mpg anterior y di qué variables son contínuas.
+
+Continuas: disp, year, cyl, cty, hwy
+
+##Ejercicio 4
+
+Dibuja las variables contínuas con color, tamaño y forma respectivamente.
+
+
+ggplot(data = mpg) +
+
+  geom_point(mapping = aes(x = hwy, y = cty, color = year))
+
+ggplot(data = mpg) +
+
+  geom_point(mapping = aes(x = hwy, y = cty, size = year))
+
+ggplot(data = mpg) +
+
+  geom_point(mapping = aes(x = hwy, y = cty, shape = year))
+
+Una variable continua no se puede representar por formas
+
+## •Ejercicio 5
+
+¿En qué se diferencian las estéticas para variables contínuas y categóricas?
+
+Para las primeras representan el valor y para las segundas la categoria a la cual pertenecen
+
+## Ejercicio 6
+
+¿Qué ocurre si haces un mapeo de la misma variable a múltiples estéticas?
+
+Se combinan el color, la forma y el tamaño en la representación
+
+## Ejercicio 7
+
+Vamos a conocer una estética nueva llamada stroke. ¿Qué hace? ¿Con qué formas funciona bien?
+
+Se utiliza para cambiar el tamaño de borde de las formas, funciona bien con formas que tengan relleno
+
+## Ejercicio 8
+
+¿Qué ocurre si haces un mapeo de una estética a algo que no sea directamente el nombre de una variable (por ejemplo aes(color = displ < 4))?
+
+El color solo se aplica a las formas que cumplan con la condicion

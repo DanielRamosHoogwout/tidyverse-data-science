@@ -1,0 +1,21 @@
+---
+title: "Tarea 11 Tidyverse"
+author: "Daniel Ramos"
+date: "1/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Ejercicio 1
+Intenta describir con frases entendibles el conjunto de vuelos retrasados. Intenta dar afirmaciones como por ejemplo:
+
+- Un vuelo tiende a salir unos 20 minutos antes el 50% de las veces y a salir tarde el 50% de las veces restantes.
+
+- Los vuelos de la compañía XX llegan siempre 20 minutos tarde
+
+- El 95% de los vuelos a HNL llegan a tiempo, pero el 5% restante se retrasan más de 3 horas.
+
+Intenta dar por lo menos 5 afirmaciones verídicas en base a los datos que tenemos disponibles.
