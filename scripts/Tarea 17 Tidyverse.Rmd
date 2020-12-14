@@ -1,0 +1,118 @@
+---
+title: "Tarea 17 Tidyverse"
+author: "Daniel Ramos"
+date: "11/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Ejercicio 1
+
+Describe cómo están organizadas las variables y observaciones en cada una de las cinco famílias de tablas table1... table5 de tidyverse.
+
+```{r}
+table1 #Pais, año, casos y poblacion
+table2 #Pais año, tipo de dato, dato
+table3 #Pais, año, ratio
+table4a #Pais, casos en 1999, casos en 2000
+table4b # Pais, poblacion 99 y poblacion 00
+table5 #Pais, siglo-1, dos ultimos digitos del año, ratio
+```
+
+## Ejercicio 2
+
+Calcula la columna de rate para table2 y para la combinación de table4a y table4b sin usar las funciones gather o spread. 
+
+```{r}
+casos <- filter(table2, type == "cases")
+names(casos) = c("c_country", "c_year", "c_type", "c_count")
+pop <- filter(table2, type == "population")
+names(pop) = c("p_country", "p_year", "p_type", "p_count")
+tabla <- cbind(casos,pop)
+mutate(tabla,
+       rate = c_count/p_count*100000) #Casos por 100.000 habitantes
+```
+
+## Ejercicio 3
+
+Recrea el plot que hemos hecho en la clase para mostrar los casos de infección a lo largo de los años usando la table2 en lugar de la table1. ¿En qué difiere el proceso?
+
+```{r}
+tabla %>%
+  ggplot(aes(c_year, c_count)) +
+  geom_line(aes(group = c_country), color = "grey")
+#Para hacerlo igual tendriamos que ayudarnos de la transformacion que hemos hecho antes
+```
+
+## Ejercicio 4
+Las funciones spread y gather no son absolutamente simétricas. Toma el siguiente ejemplo para explicarlo correctamente:
+
+roi <- tibble(
+  year = c(rep(2016,4), rep(2017,4), 2018),
+  quarter = c(rep(c(1,2,3,4),2),1),
+  return = rnorm(9, mean = 0.5, sd = 1)
+)
+
+roi %>%
+  spread(year, return) %>%
+  gather("year", "return", `2016`:`2018`)
+  
+```{r}
+roi <- tibble(
+  year = c(rep(2016,4), rep(2017,4), 2018),
+  quarter = c(rep(c(1,2,3,4),2),1),
+  return = rnorm(9, mean = 0.5, sd = 1)
+)
+
+roi %>%
+  spread(year, return) %>%
+  gather("year", "return", `2016`:`2018`)
+
+#Año era un entero y ahora es un character
+```
+
+## Ejercicio 5
+Las funciones de spread y gather comparten un argumento convert. Investiga su uso.
+```{r}
+#if TRUE will automatically convert values to logical, integer, numeric, complex or factor as appropriate
+```
+
+## Ejercicio 6
+Sin ejecutar, investiga por qué falla el siguiente código
+
+table4a %>% gather(1999,2000, key = "year", value = "cases")
+```{r}
+table4a %>% gather(`1999`,`2000`, key = "year", value = "cases")
+```
+## Ejercicio 7
+Explica porqué falla la función spread aplicada a la siguiente tribble:
+
+people <- tribble(
+  ~name,         ~key,   ~value,
+  #-------------|-------|-------
+  "Juan Gabriel", "age",     30,
+  "Juan Gabriel", "weight",  71,
+  "Juan Gabriel", "age",     18,
+  "Ricardo",      "age",     55,
+  "Ricardo",      "age",     75,
+)
+
+¿Crees que añadiendo alguna nueva columna se soluciona el problema? Di cual.
+```{r}
+people <- tribble(
+  ~name,         ~key,   ~value,
+  #-------------|-------|-------
+  "Juan Gabriel", "age",     30,
+  "Juan Gabriel", "weight",  71,
+  "Juan Gabriel", "age",     18,
+  "Ricardo",      "age",     55,
+  "Ricardo",      "age",     75,
+)
+```
+
+
+

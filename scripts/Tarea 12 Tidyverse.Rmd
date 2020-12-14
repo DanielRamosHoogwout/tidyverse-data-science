@@ -1,0 +1,83 @@
+---
+title: "Tarea 12 Tidyverse"
+author: "Daniel Ramos"
+date: "4/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Ejercicio 1
+
+Explora la distribución de las variables x, y, z del dataset de diamonds. ¿Qué podemos inferir?
+
+Busca un diamante (por internet por ejemplo) y decide qué dimensiones pueden ser aceptables para las medidas de longitud, altura y anchura de un diamante.
+
+```{r}
+library(tidyverse)
+ggplot(data = diamonds) +
+  geom_histogram(mapping = aes(x = x), binwidth=0.1)
+ggplot(data = diamonds) +
+  geom_histogram(mapping = aes(x = y), binwidth=0.1)
+ggplot(data = diamonds) +
+  geom_histogram(mapping = aes(x = z), binwidth=0.1)
+
+#Segun los histogramas, un tamaño medio podria ser x= 4mm , y = 5mm, z= 3mm por ejemplo
+```
+## Ejercicio 2
+Explora la distribución del precio (price) del dataset de diamonds. ¿Hay algo que te llame la atención o resulte un poco extraño?
+
+Recuerda hacer uso del parámetro binwidth para probar un rango dispar de valores hasta ver algo que te llame la atención.
+```{r}
+ggplot(data = diamonds) +
+  geom_histogram(mapping = aes(x = price), binwidth=50)
+#Hay muchos diamantes baratos y a medida que aumenta el precio, la cantidad va disminuyendo.
+```
+## Ejercicio 3
+¿Cuantos diamantes hay de 0.99 kilates? ¿Y de exactamente 1 kilate?
+```{r}
+diamonds %>%
+  count(carat == 0.99) #Hay 23
+diamonds %>%
+  count(carat == 1) #Hay 1558
+#Deontológicamente no hay redondeo: la centésima de quilate no alcanzado no se considera (por derogación de esta regla, el tercer 9 después de la coma es redondeado a la centésima superior
+#0,9990 se considera como 1,00 quilate, 0,9989 se considera como 0,99 quilate
+```
+## Ejercicio 4
+Compara y contrasta el uso de las funciones coord_cartesian() frente xlim() y ylim() para hacer zoom en un histograma.
+
+¿Qué ocurre si dejamos el parámetro binwidth sin configurar?
+
+¿Qué ocurre si hacemos zoom y solamente se ve media barra?
+```{r}
+ggplot(data = diamonds) +
+  geom_histogram(mapping = aes(x = price)) + 
+  coord_cartesian(xlim = c(325, 800))
+#Si dejamos el parametro bins sin configurar R coge el parametro solo
+#Si acercamos demasiado perdemos informacion
+```
+## Ejercicio 5
+¿Qué ocurre cuando hay NAs en un histograma?
+R te avisa de que los ha eliminado de la representacion
+¿Qué ocurre cuando hay NAs en un diagrama de barras?
+¿Qué diferencias observas?
+```{r}
+good_diamonds <- diamonds %>%
+  mutate(y = ifelse(y<2 | y>30, NA, y))
+
+ggplot(good_diamonds) +
+  geom_histogram(aes(x=y))
+
+ggplot(good_diamonds) + 
+  geom_bar(aes(x=y))
+#R te avisa de que ha eliminado los NA de la representacion
+#barplot en este caso lo representa con mucha más precisión
+```
+## Ejercicio 6
+¿Qué hace la opción na.rm = TRUE en las funciones mean() y sum()?
+```{r}
+#Elimina las observaciones con NA para que no 'contagie' el resultado final
+```
+

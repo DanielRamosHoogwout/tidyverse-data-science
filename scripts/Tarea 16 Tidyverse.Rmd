@@ -1,0 +1,105 @@
+---
+title: "Tarea 16 Tidyverse"
+author: "Daniel Ramos"
+date: "7/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Ejercicio 1
+
+Investiga la documentación para decir cuales son los argumentos más importantes que trae la función locale()
+
+```{r}
+locale(
+  date_names = "en",
+  date_format = "%AD",
+  time_format = "%AT",
+  decimal_mark = ".",
+  grouping_mark = ",",
+  tz = "UTC",
+  encoding = "UTF-8",
+  asciify = FALSE
+)
+```
+
+## Ejercicio 2
+
+Investiga qué ocurre si intentamos configurar a la vez el decimal_mark y grouping_mark con el mismo carácter. 
+¿Qué valor por defecto toma el grouping_mark cuando configuramos el decimal_mark al carácter de coma “,”? 
+¿Qué valor por defecto toma el decimal_mark cuando configuramos el grouping_mark al carácter de punto “.”?
+
+```{r}
+
+locale = locale(decimal_mark = ",")
+locale = locale(grouping_mark = ".")
+locale()
+#Si lo configuramos con el mismo da un error
+#Se cambian de uno al otro el punto o la coma
+```
+
+## Ejercicio 3
+Investiga qué hace la opción del  locale() cuando se utiliza junto al date_format y al time_format . Crea un ejemplo que muestre cuando puede sernos útil.
+```{r}
+locale = locale(date_format = "%d-%B-%Y", time_format ="%H.%M")
+parse_date("11-October-1993", locale = locale)
+parse_time("19.11", locale=locale)
+```
+
+## Ejercicio 4
+
+Crea un nuevo objeto locale que encapsule los ajustes más comunes de los parámetros para la carga de los fichero con los que sueles trabajar.
+
+```{r}
+locale =locale(
+  date_names = "es",
+  date_format = "%d-%B-%Y",
+  time_format = "%H:%M",
+  decimal_mark = ",",
+  grouping_mark = ".",
+  tz = "UTC",
+  encoding = "UTF-8",
+  asciify = FALSE
+)
+```
+
+## Ejercicio 5
+
+Investiga las diferencias entre read_csv() y read_csv2()
+```{r}
+#read_csv lee archivos separados por comas
+#read_csv leer archivos separados por punto y coma y coma para el separador decimal
+```
+
+## Ejercicio 6
+
+Investiga las codificaciones que son más frecuentes en Europa y las más comunes en Asia. Usa un poco de google e iniciativa para investigar acerca de este tema.
+
+Europa: ISO 8859-1 hasta 8859-16 incluyendo arabe, hebreo y tailandes
+Asia: Shift JIS, EUC-KR, Guobiao
+
+## Ejercicio 7
+Genera el formato correcto de string que procesa cada una de las siguientes fechas y horas:
+
+```{r}
+v1 <- "May 19, 2018"
+parse_date(v1, format= "%b %d, %Y")
+v2 <- "2018-May-08"
+parse_date(v2, format= "%Y-%b-%d")
+v3 <- "09-Jul-2013"
+parse_date(v3, format= "%d-%b-%Y")
+v4 <- c("January 19 (2019)", "May 1 (2015)") #No me mezcles idiomas JB
+parse_date(v4, format= "%B %d (%Y)")
+v5 <- "12/31/18" # Dic 31, 2014
+parse_date(v5, format= "%m/%d/%y")
+v6 <- "1305"
+parse_time(v6, format= "%H%M")
+v7 <- "12:05:11.15 PM"
+parse_time(v7, format= "%I:%M:%OS %p")
+```
+
+

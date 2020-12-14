@@ -1,0 +1,113 @@
+---
+title: "Tarea 15 Tidyverse"
+author: "Daniel Ramos"
+date: "6/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Ejercicio 1
+Indica qué función y parámetros usarías para leer ficheros separados con "|"
+```{r}
+read_delim(file, delim="|")
+```
+
+## Ejercicio 2
+Además de file, skip y comment que hemos visto en el curso, ¿qué otros argumentos tiene read_csv y read_tsv en común? Indica para que sirve cada uno de ellos
+```{r}
+read_csv( #Son identicos en cuanto a parametros
+  file,
+  col_names = TRUE, #Si la primera fila es el nombre de las columnas
+  col_types = NULL, #If NULL, all column types will be imputed from the first 1000 rows on the input.
+  locale = default_locale(), #The locale controls defaults that vary from place to place. The default locale is US-centric (like R), but you can use locale() to create your own locale that controls things like the default time zone, encoding, decimal mark, big mark, and day/month names.
+  na = c("", "NA"), #Character vector of strings to interpret as missing values. Set this option to character() to indicate no missing values
+  quoted_na = TRUE, #Should missing values inside quotes be treated as missing values (the default) or string
+  quote = "\"",
+  comment = "",
+  trim_ws = TRUE, #Should leading and trailing whitespace be trimmed from each field before parsing it?
+
+
+  skip = 0,
+  n_max = Inf, #Maximum number of records to read.
+  guess_max = min(1000, n_max), #Maximum number of records to use for guessing column types.
+  progress = show_progress(),
+  skip_empty_rows = TRUE #Should blank rows be ignored altogether?
+)
+
+```
+
+## Ejercicio 3
+
+Indica los argumentos más importantes de read_fwf()
+```{r}
+read_fwf(
+  file,
+  col_positions,
+  col_types = NULL,
+  locale = default_locale(),
+  na = c("", "NA"),
+  comment = "",
+  trim_ws = TRUE,
+  skip = 0,
+  n_max = Inf,
+  guess_max = min(n_max, 1000),
+  progress = show_progress(),
+  skip_empty_rows = TRUE
+)
+```
+## Ejercicio 4
+A veces un csv contiene necesariamente comas en los campos que son strings. Para evitar problemas en la carga, suelen ir rodeadas de comillas dobles " o de comillas simples '. La convención de read_csv() es que asume que cualquier caracter vendrá rodeado por comillas dobles " y si lo queremos cambiar tenemos que usar la función read_delim(). 
+
+Indica qué argumentos tendríamos que especificar para poder leer el texto del siguiente data frame correctamente
+
+"x,y\n1,'a,b'"
+```{r}
+data <- "x,y\n1,'a,b'"
+read_delim(data, ",", quote = "'")
+```
+
+## Ejercicio 5
+Indica qué está mal en la siguiente línea de lectura de CSV:
+
+read_csv("x,y\n1,2,3\n4,5,6")
+```{r}
+read_csv("x,y\n1,2,3\n4,5,6")
+#Hay dos columnas, y 3 datos en cada final, solo lee los 2 primeros.
+```
+
+## Ejercicio 6
+Indica qué está mal en la siguiente línea de lectura de CSV:
+
+read_csv("x,y,z\n1,2\n3,4,5,6")
+```{r}
+read_csv("x,y,z\n1,2\n3,4,5,6")
+#A la primera fila le falta un valor (NA) y la segunda tiene un valor de más que no lee (6)
+```
+## Ejercicio 7
+Indica qué está mal en la siguiente línea de lectura de CSV:
+
+read_csv("x,y\n\"1")
+```{r}
+read_csv("x,y\n1")#No se como explicarlo
+```
+## Ejercicio 8
+Indica qué está mal en la siguiente línea de lectura de CSV:
+
+read_csv("x,y\n1,2\na,b")
+```{r}
+read_csv("x,y\n1,2\na,b")
+#Los inputs no son homogeneos
+```
+## Ejercicio 9
+Indica qué está mal en la siguiente línea de lectura de CSV:
+
+read_csv("x;y\n1;2")
+```{r}
+read_csv("x;y\n1;2")
+#Hay que usar comas para separar los datos
+```
+
