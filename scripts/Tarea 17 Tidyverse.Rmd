@@ -104,15 +104,78 @@ people <- tribble(
 ¿Crees que añadiendo alguna nueva columna se soluciona el problema? Di cual.
 ```{r}
 people <- tribble(
-  ~name,         ~key,   ~value,
-  #-------------|-------|-------
-  "Juan Gabriel", "age",     30,
-  "Juan Gabriel", "weight",  71,
-  "Juan Gabriel", "age",     18,
-  "Ricardo",      "age",     55,
-  "Ricardo",      "age",     75,
+  ~name,         ~key,   ~value, ~obs,
+  #-------------|-------|-------|------
+  "Juan Gabriel", "age",     30, 1,
+  "Juan Gabriel", "weight",  71, 1,
+  "Juan Gabriel", "age",     18, 2,
+  "Ricardo",      "age",     55, 1,
+  "Ricardo",      "age",     75, 2
 )
+spread(people, key, value)
+#La edad de JB esta dos veces al igual que la de ricardo.
+```
+## Ejercicio 8
+Limpia la siguiente tribble con la función de spread o gather que creas más útil. 
+
+pregnancy <- tribble(
+  ~pregnant, ~male, ~female,
+  #--------|------|---------
+  "yes",    NA,    32,
+  "no",     85,    43
+)
+
+Indica cuales son las nuevas variables después de aplicar la función.
+```{r}
+pregnancy <- tribble(
+  ~pregnant, ~male, ~female,
+  #--------|------|---------
+  "yes",    NA,    32,
+  "no",     85,    43
+)
+pregnancy %>%
+gather("male", "female", key = sexo, value = count)
 ```
 
+## Ejercicio 9
+Investiga los parámetros extra y fill de la función separate. Experimenta con varias opciones de las mismas con las dos tibbles siguientes:
 
+tibble(x = c("a,b,c", "d,e,f,g","h,i,j")) %>%
+  separate(x, c("x", "y", "z"))
 
+tibble(x = c("a,b,c", "d,e","f,g,h")) %>%
+  separate(x, c("x", "y", "z"))
+```{r}
+#Extra
+tibble(x = c("a,b,c", "d,e,f,g","h,i,j")) %>%
+  separate(x, c("x", "y", "z"), extra = "warn")
+
+tibble(x = c("a,b,c", "d,e,f,g","h,i,j")) %>%
+  separate(x, c("x", "y", "z"), extra = "drop")
+
+tibble(x = c("a,b,c", "d,e,f,g","h,i,j")) %>%
+  separate(x, c("x", "y", "z"), extra = "merge")
+#Fill
+tibble(x = c("a,b,c", "d,e","f,g,h")) %>%
+  separate(x, c("x", "y", "z"), fill="warn")
+
+tibble(x = c("a,b,c", "d,e","f,g,h")) %>%
+  separate(x, c("x", "y", "z"), fill="right")
+
+tibble(x = c("a,b,c", "d,e","f,g,h")) %>%
+  separate(x, c("x", "y", "z"), fill="left")
+```
+## Ejercicio 10
+unite y separate tienen un argumento llamado remove. ¿Cómo funciona? ¿Se te ocurre cuando lo pondrías a false?
+
+If TRUE, remove input column from output data frame.
+
+## Ejercicio 11
+Compara las funciones separate y unite. ¿Por qué existen tres variantes de separación (basándonos en posición, separador o por grupos) pero solamente una para unir?
+
+Se une mediante el separador que tienen entre valores
+
+## Ejercicio 12
+Compara el argumento fill de spread y el de complete. Investiga también el argumento direction de la función fill.
+
+If set, missing values will be replaced with this value. Note that there are two types of missingness in the input: explicit missing values (i.e. NA), and implicit missings, rows that simply aren't present. Both types of missing value will be replaced by fill.
