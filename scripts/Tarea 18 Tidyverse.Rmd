@@ -1,0 +1,89 @@
+---
+title: "Tarea 18 Tidyverse"
+author: "Daniel Ramos"
+date: "5/1/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Ejercicio 1
+Imagina que quieres dibujar la ruta de cada avión desde su origen a su destino. ¿Qué variables necesitarías y qué tablas deberías combinar?
+
+Necesitaria faa, tailnum, origin y dest. Por tanto, necesitaria las tablas planes, airports, flights
+
+## Ejercicio 2
+¿Qué relaciones existen entre las tablas weather y airports? ¿Qué claves son las que se relacionan entre ambas tablas?
+weather solo contiene información de los aeropuertos de origen de NYC. Si contuviera información meteorológica de todos los aeropuertos de Estados Unidos, qué relación adicional tendríamos que definir entre esta tabla y flights?
+Algunos días del año son especiales (festivos como el 4 de Julio en América) y menos personal suelen volar. ¿Cómo indicaríamos esta información como tabla en forma de data frame? ¿Cuáles serían sus claves primarias y cómo se relacionaría la nueva tabla con las ya existentes del dataset de vuelos?
+Inventa una clave sustituta para el dataset de vuelos.
+
+year, month, day, hour, origin
+Habría que añadir destino, para saber el tiempo que hace en el destino
+Los festivos los podriamos indicar en una tabla, se relacionaria con month, day y hour y aparte añadiria si es festivo o no.
+
+## Ejercicio 3
+Identifica las claves de los siguientes datasets de R (puede que te falten algunos paquetes así que instálalos antes):
+
+Lahman::Batting
+babynames::babynames
+fueleconomy::vehicles
+ggplot2::diamonds
+nasaweather::atmos
+
+```{r}
+?Lahman::Batting
+batting %>%
+
+  count(playerID, yearID, stint, teamID, lgID) %>%
+
+  filter(n > 1)
+
+?babynames::babynames
+babies %>%
+
+  count(year, sex, name) %>%
+
+  filter(n > 1)
+
+?fueleconomy::vehicles
+vehicles %>%
+
+  count(id) %>%
+
+  filter(n > 1)
+
+?ggplot2::diamonds
+#No hay primarias
+?nasaweather::atmos
+atmos %>%
+
+  count(lat, long, year, month) %>%
+
+  filter(n > 1)
+```
+
+## Ejercicio 4
+Dibuja un diagrama que muestre las interrelaciones entre las tablas Batting, Master y Salaries del paquete Lahman.
+Dibuja otro diagrama que muestre las interrelaciones entre las tablas Master, Managers y AwardsManagers del mismo.
+¿Cómo caracterizarías la relación existente entre las tablas Batting, Pitching y Fielding?
+
+## Ejercicio 5
+Calcula el retraso promedio por destino. Luego haz un join con el dataset de airports para mostrar información espacial de los retrasos. Pinta un mapa con puntos proporcionales al retraso por cada destino (recuerda usar los parámetros size o colour para mostrar el retraso promedio de cada aeropuerto).
+
+Si quieres dibujar un mapa con ggplot, puedes usar:
+
+airports %>% 
+  semi_join(flights, c("faa" = "dest")) %>%
+  ggplot(aes(lon,lat)) + 
+  borders("state")+
+  geom_point()+
+  coord_quickmap()
+```{r}
+
+```
+  
+  
